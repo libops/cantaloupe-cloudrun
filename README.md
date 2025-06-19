@@ -8,7 +8,9 @@ The cantaloupe IIIF server is running in multiple Google Cloud regions. Any requ
 
 You can pass any publicly available URL to the cantaloupe IIIF server. e.g. for a 80x120 px JPG of a dog use
 
-**https://cantaloupe.libops.io/iiif/2/**https%3A%2F%2Ffastly.picsum.photos%2Fid%2F237%2F200%2F300.jpg%3Fhmac%3DTmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U/**full/80,120/0/default.jpg**
+```
+https://cantaloupe.libops.io/iiif/2/https%3A%2F%2Ffastly.picsum.photos%2Fid%2F237%2F200%2F300.jpg%3Fhmac%3DTmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U/full/80,120/0/default.jpg
+```
 
 ## Regions available
 
