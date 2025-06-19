@@ -1,0 +1,114 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    branches:
+      - main
+env:
+  TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
+jobs:
+  terraform:
+    name: Run Terraform Plan
+    runs-on: ubuntu-24.04
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+      with:
+        terraform_version: 1.5.7
+
+    - name: lint
+      run: find . -type f -name "*.tf" -exec terraform fmt {} \;
+      shell: bash
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@6189d56e4096ee891640bb02ac264be376592d6a # v2
+      with:
+        version: 'latest'
+
+    - name: Authenticate to Google Cloud
+      id: 'auth'
+      uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v2
+      with:
+        workload_identity_provider: ${{ secrets.GCLOUD_OIDC_POOL }}
+        service_account: ${{ secrets.GSA }}
+        token_format: 'access_token'
+
+    - name: Configure gcloud
+      run: |
+        gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
+        gcloud config set disable_prompts true
+
+    - uses: 'docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772' # v3
+      name: 'Docker login'
+      with:
+        registry: 'us-docker.pkg.dev'
+        username: 'oauth2accesstoken'
+        password: '${{ steps.auth.outputs.access_token }}'
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+
+    - name: Terraform Plan
+      id: plan
+      run: |
+        out="$(terraform plan -no-color | grep -v -E '^(module\..+|Reading|Read complete|Refreshing state)')"
+        out="${out//'%'/'%25'}"
+        out="${out//$'\n'/'%0A'}"
+        out="${out//$'\r'/'%0D'}"
+        echo "::set-output name=plan::$out"
+      continue-on-error: true
+
+    - name: Post comment with Terraform plan
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const issue_number = context.issue.number;
+          const owner = context.repo.owner;
+          const repo = context.repo.repo;
+          const commentIdentifier = '<!-- terraform-plan-comment -->';
+          const newCommentBody = `#### Terraform Plan 📖
+          ${commentIdentifier}
+          <details><summary>Show Plan</summary>
+
+          \`\`\`terraform
+          ${{ steps.plan.outputs.plan }}
+          \`\`\`
+
+          </details>`;
+
+          // Get existing comments
+          const { data: comments } = await github.rest.issues.listComments({
+            owner,
+            repo,
+            issue_number
+          });
+
+          // Find existing comment
+          const existingComment = comments.find(comment => comment.body.includes(commentIdentifier));
+
+          if (existingComment) {
+            // Update existing comment
+            await github.rest.issues.updateComment({
+              owner,
+              repo,
+              comment_id: existingComment.id,
+              body: newCommentBody
+            });
+          } else {
+            // Create new comment
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number,
+              body: newCommentBody
+            });
+          }

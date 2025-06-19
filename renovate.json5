@@ -1,0 +1,70 @@
+{
+  extends: [
+    'config:best-practices',
+    ':rebaseStalePrs',
+  ],
+  ignorePaths: [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/__tests__/**",
+    "**/tests/**",
+    "**/__fixtures__/**"
+  ],
+  packageRules: [
+    {
+      matchPackageNames: [
+        'hashicorp/terraform',
+      ],
+      enabled: false,
+    },
+    {
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+        'digest',
+      ],
+      groupName: 'bump-dependencies',
+      schedule: [
+        'after 10pm on Friday',
+      ],
+      matchPackageNames: [
+        '*',
+      ],
+    },
+    {
+      matchUpdateTypes: [
+        'major',
+      ],
+      groupName: 'all major updates',
+      schedule: [
+        'after 10pm on the first day of the month',
+      ],
+      matchPackageNames: [
+        '*',
+      ],
+    },
+  ],
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'Update docker tags in main.tf',
+      fileMatch: [
+        '\\.tf$',
+      ],
+      matchStrings: [
+        '\\s+image\\s+= "(?<depName>[\\w\\/\\-]+)(?::(?<currentValue>[\\w.\\-]+))?(?:@(?<currentDigest>[\\w:]+))?"',
+      ],
+      datasourceTemplate: "docker"
+    },
+  ],
+  labels: [
+    'dependencies',
+  ],
+  osvVulnerabilityAlerts: true,
+  dependencyDashboardOSVVulnerabilitySummary: 'unresolved',
+  vulnerabilityAlerts: {
+    enabled: true,
+  },
+}
+
