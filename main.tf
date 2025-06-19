@@ -1,16 +1,8 @@
 terraform {
   required_version = "= 1.5.7"
   required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "6.6.0"
-    }
     google = {
       source  = "hashicorp/google"
-      version = "6.40.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
       version = "6.40.0"
     }
   }
