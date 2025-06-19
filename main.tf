@@ -39,10 +39,27 @@ data "google_service_account" "cr" {
   account_id = "cr-cantaloupe"
 }
 
+data "google_service_account" "github" {
+  project    = var.project
+  account_id = "github"
+}
+
 resource "google_storage_bucket_iam_member" "gcs-admin" {
+  for_each = toset([
+    data.google_service_account.cr.email,
+  ])
   bucket = google_storage_bucket.data.name
   role   = "roles/storage.objectAdmin"
-  member = "serviceAccount:${data.google_service_account.cr.email}"
+  member = "serviceAccount:${each.value}"
+}
+
+resource "google_storage_bucket_iam_member" "gcs-bucket-viewer" {
+  for_each = toset([
+    data.google_service_account.github.email,
+  ])
+  bucket = google_storage_bucket.data.name
+  role   = "roles/storage.legacyBucketOwner"
+  member = "serviceAccount:${each.value}"
 }
 
 module "cantaloupe" {
