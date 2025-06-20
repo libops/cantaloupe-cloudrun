@@ -4,12 +4,12 @@
     ':rebaseStalePrs',
   ],
   ignorePaths: [
-    "**/node_modules/**",
-    "**/bower_components/**",
-    "**/vendor/**",
-    "**/__tests__/**",
-    "**/tests/**",
-    "**/__fixtures__/**"
+    '**/node_modules/**',
+    '**/bower_components/**',
+    '**/vendor/**',
+    '**/__tests__/**',
+    '**/tests/**',
+    '**/__fixtures__/**',
   ],
   packageRules: [
     {
@@ -49,13 +49,13 @@
     {
       customType: 'regex',
       description: 'Update docker tags in main.tf',
-      fileMatch: [
-        '\\.tf$',
+      managerFilePatterns: [
+        '/\\.tf$/',
       ],
       matchStrings: [
         '\\s+image\\s+= "(?<depName>[\\w\\/\\-]+)(?::(?<currentValue>[\\w.\\-]+))?(?:@(?<currentDigest>[\\w:]+))?"',
       ],
-      datasourceTemplate: "docker"
+      datasourceTemplate: 'docker',
     },
   ],
   labels: [
@@ -67,4 +67,3 @@
     enabled: true,
   },
 }
-
