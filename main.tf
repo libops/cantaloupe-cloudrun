@@ -63,7 +63,7 @@ module "cantaloupe" {
   containers = tolist([
     {
       name   = "cantaloupe",
-      image  = "islandora/cantaloupe:4.1.6@sha256:41f730b55375d0f6c39a91f768c2d4cebf1bf64abb426d20b75ae7c4b019dcae"
+      image  = "islandora/cantaloupe:4.1.7@sha256:6898a4d00ef45b73ffc6c3392e88318884e1410a730ceaa332e26359088a54fe"
       port   = 8182
       memory = "16Gi"
       cpu    = "4000m"
