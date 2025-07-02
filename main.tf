@@ -55,7 +55,7 @@ resource "google_storage_bucket_iam_member" "gcs-bucket-viewer" {
 }
 
 module "cantaloupe" {
-  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.0.2"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.0.7"
 
   name    = "cantaloupe"
   project = var.project
