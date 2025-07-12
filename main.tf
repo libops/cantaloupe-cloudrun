@@ -78,6 +78,10 @@ module "cantaloupe" {
 
   addl_env_vars = tolist([
     {
+      name  = "CANTALOUPE_PROCESSOR_STREAM_RETRIEVAL_STRATEGY"
+      value = "CacheStrategy"
+    },
+    {
       name  = "CANTALOUPE_CACHE_SERVER_DERIVATIVE_ENABLED"
       value = "true"
     },
