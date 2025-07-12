@@ -82,6 +82,10 @@ module "cantaloupe" {
       value = "CacheStrategy"
     },
     {
+      name  = "CANTALOUPE_HTTPSOURCE_CHUNKING_ENABLED"
+      value = "false"
+    },
+    {
       name  = "CANTALOUPE_CACHE_SERVER_DERIVATIVE_ENABLED"
       value = "true"
     },
