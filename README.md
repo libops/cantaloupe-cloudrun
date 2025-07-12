@@ -26,6 +26,7 @@ https://cantaloupe.libops.io/iiif/2/https%3A%2F%2Ffastly.picsum.photos%2Fid%2F23
 | **us-south1**               | Dallas, Texas               |
 | **northamerica-northeast1** | Montréal, Québec, Canada    |
 | **northamerica-northeast2** | Toronto, Ontario, Canada    |
+| **northamerica-south1**     | Mexico                      |
 | **australia-southeast1**    | Sydney, New South Wales     |
 | **australia-southeast2**    | Melbourne, Victoria         |
 
