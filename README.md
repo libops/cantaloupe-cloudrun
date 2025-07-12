@@ -36,7 +36,11 @@ This is free to try. Please contact `info at libops dot io` for pricing informat
 
 ## Install (Islandora)
 
-To use these managed service, in your ISLE `docker-compose.yml` you can point to the respective service to have it perform your derivative generation.
+To use this managed Cantaloupe service, update Islandora's Drupal config setting for the IIIF server URL. This configuration change should only be applied to your production environment, as this managed Cantaloupe service requires a publicly accessible Islandora site.<sup>*</sup>
+
+### Docker
+
+If your ISLE site is ran using Docker, the IIIF server URL can be updated by setting the `DRUPAL_DEFAULT_CANTALOUPE_URL` environment variable in the `drupal` service of your ISLE `docker-compose.yml` file to point to the managed Cantaloupe URL (`https://cantaloupe.libops.io/iiif/2`).
 
 ```
     drupal-prod:
@@ -45,6 +49,17 @@ To use these managed service, in your ISLE `docker-compose.yml` you can point to
             <<: [*drupal-environment]
             DRUPAL_DEFAULT_CANTALOUPE_URL: "https://cantaloupe.libops.io/iiif/2"
 ```
+
+### Alternative install
+
+If you're not running Islandora using docker, you can also integrate with this service by updating your Islandora Drupal site's `settings.php`
+
+```php
+$config['islandora_iiif.settings']['iiif_server'] = "https://cantaloupe.libops.io/iiif/2";
+```
+
+
+<sub>* Additional integration options for Islandora sites behind firewalls are available. Please contact `info at libops dot io` for more information.</sub>
 
 
 ## Monitoring
