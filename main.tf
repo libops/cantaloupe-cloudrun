@@ -3,7 +3,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "6.43.0"
+      version = "7.8.0"
     }
   }
 
@@ -55,7 +55,7 @@ resource "google_storage_bucket_iam_member" "gcs-bucket-viewer" {
 }
 
 module "cantaloupe" {
-  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.1.0"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.3"
 
   name    = "cantaloupe"
   project = var.project
@@ -63,7 +63,7 @@ module "cantaloupe" {
   containers = tolist([
     {
       name   = "cantaloupe",
-      image  = "islandora/cantaloupe:4.3.6@sha256:fe34a706591e1d98d729f2c7d7d0c20a2429b8757f1ae00bc1a14dfa7dff7b17"
+      image  = "islandora/cantaloupe:6.0.3@sha256:c9c20854074d4531078c2f8fd9a2dd359f122a46731473d7ce1afc9edbfec044"
       port   = 8182
       memory = "16Gi"
       cpu    = "4000m"
