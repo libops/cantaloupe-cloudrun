@@ -1,61 +1,6 @@
 {
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    'config:best-practices',
-    ':rebaseStalePrs',
+    'github>libops/renovate-config:default.json5',
   ],
-  packageRules: [
-    {
-      matchPackageNames: [
-        'hashicorp/terraform',
-      ],
-      enabled: false,
-    },
-    {
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-        'digest',
-      ],
-      groupName: 'bump-dependencies',
-      schedule: [
-        '* 22 * * 5',
-      ],
-      matchPackageNames: [
-        '*',
-      ],
-    },
-    {
-      matchUpdateTypes: [
-        'major',
-      ],
-      groupName: 'all major updates',
-      schedule: [
-        '* 22 1-7 * *',
-      ],
-      matchPackageNames: [
-        '*',
-      ],
-    },
-  ],
-  customManagers: [
-    {
-      customType: 'regex',
-      description: 'Update docker tags in main.tf',
-      managerFilePatterns: [
-        '/\\.tf$/',
-      ],
-      matchStrings: [
-        '\\s+image\\s+= "(?<depName>[\\w\\/\\-]+)(?::(?<currentValue>[\\w.\\-]+))?(?:@(?<currentDigest>[\\w:]+))?"',
-      ],
-      datasourceTemplate: 'docker',
-    },
-  ],
-  labels: [
-    'dependencies',
-  ],
-  osvVulnerabilityAlerts: true,
-  dependencyDashboardOSVVulnerabilitySummary: 'unresolved',
-  vulnerabilityAlerts: {
-    enabled: true,
-  },
 }
