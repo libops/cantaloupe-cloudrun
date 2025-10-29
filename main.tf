@@ -3,7 +3,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "7.8.0"
+      version = "7.9.0"
     }
   }
 
@@ -63,7 +63,7 @@ module "cantaloupe" {
   containers = tolist([
     {
       name   = "cantaloupe",
-      image  = "islandora/cantaloupe:6.0.3@sha256:c9c20854074d4531078c2f8fd9a2dd359f122a46731473d7ce1afc9edbfec044"
+      image  = "islandora/cantaloupe:6.0.5@sha256:ef30df94fe51001682fb1a4704c8c87058df4ef96e936ab920c930819663ed58"
       port   = 8182
       memory = "16Gi"
       cpu    = "4000m"
