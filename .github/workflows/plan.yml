@@ -46,7 +46,7 @@ jobs:
         gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
         gcloud config set disable_prompts true
 
-    - uses: 'docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772' # v3
+    - uses: 'docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef' # v3
       name: 'Docker login'
       with:
         registry: 'us-docker.pkg.dev'
